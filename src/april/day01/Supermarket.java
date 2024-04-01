@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Supermarket {
     static double total = 0.0;
+    boolean isPaid = false;
     public static void main(String[] args) {
         Supermarket supermarket = new Supermarket();
         supermarket.show();
@@ -37,7 +38,7 @@ public class Supermarket {
                     }
                 case 3:
                     System.out.println("*********欢迎参与抽奖*************");
-                    if (total >= 50.0){
+                    if (total >= 50.0 && supermarket.isPaid){
                         System.out.println("*                              *");
                         System.out.println("*        您有一次抽奖机会         *");
                         System.out.println("*                              *");
@@ -59,10 +60,14 @@ public class Supermarket {
         supermarket.exit();
     }
     public void showProducts() {
-        System.out.println("超市商品列表:");
-        System.out.println("1. 苹果" + "\t￥ 1.5");
-        System.out.println("2. 香蕉" + "\t￥ 2.5");
-        System.out.println("3. 橘子" + "\t￥ 3.5");
+        System.out.println("*********超市商品列表*************");
+        product apple = new product("苹果", 1.0);
+        product banana = new product("香蕉", 5.0);
+        product orange = new product("橘子", 3.0);
+        product[] products = {apple, banana, orange};
+        for (int i = 0; i < products.length; i++) {
+            System.out.println((i + 1) + ". " + products[i].getName() + "\t￥ " + products[i].getPrice());
+        }
     }
     public void show(){
         System.out.println("*********欢迎光临*************");
@@ -72,6 +77,7 @@ public class Supermarket {
         System.out.println("2. 收银结账");
         System.out.println("3. 幸运抽奖");
         System.out.println("4. 离开超市");
+        System.out.print("************请选择************");
     }
     public void exit() {
         System.out.println("*********欢迎再次光临*************");
@@ -82,35 +88,46 @@ public class Supermarket {
             showProducts();
             System.out.print("请选择商品:");
             int choice = scanner.nextInt();
-            switch (choice) {
-                case 1:
-                    System.out.println("您挑选的商品是:苹果");
-                    break;
-                case 2:
-                    System.out.println("您挑选的商品是:香蕉");
-                    break;
-                case 3:
-                    System.out.println("您挑选的商品是:橘子");
-                    break;
-                default:
-                    return;
-            }
 
-            System.out.print("请输入购买数量:");
+            System.out.print("请输入购买数量(斤):");
             double num = scanner.nextDouble();
-            double price = choice + 0.5;
+            String name = getNameByChoice(choice);
+            double price = getPriceByChoice(choice);
             double add = num * price;
-            System.out.printf("商品: %d 单价: %.2f 数量: %.2f 总价: %.2f\n", choice, price, num, add);
+            System.out.printf("商品: %s 单价: %.2f 数量: %.2f斤 总价: ￥%.2f\n",name , price, num, add);
             total += add;
 
             System.out.print("是否继续挑选商品?(y/n)");
             String input = scanner.next();
             if (!input.equalsIgnoreCase("y")) {
-                System.out.printf("您购买的所有商品总价为: %.2f\n请前往收银界面 \n" , total);
+                System.out.printf("您购买的所有商品总价为: ￥%.2f\n请前往收银界面 \n" , total);
                 return;
             }
         }
     }
+    String getNameByChoice(int choice) {
+        switch (choice) {
+            case 1:
+                return "苹果";
+            case 2:
+                return "香蕉";
+            case 3:
+                return "橘子";
+        }
+        return "";
+    }
+    double getPriceByChoice(int choice) {
+        switch (choice) {
+            case 1:
+                return 1.0;
+            case 2:
+                return 5.0;
+            case 3:
+                return 3.0;
+        }
+        return 0;
+    }
+
     public void pay() {
         if (total != 0){
             while (true) {
@@ -121,27 +138,31 @@ public class Supermarket {
                 switch (choice) {
                     case 1:
                         System.out.println("您选择的支付方式是: WeChatPay/Alipay");
-                        digitalPay();
+                        isPaid = digitalPay();
                         return;
                     case 2:
                         System.out.println("您选择的支付方式是: credit card");
-                        creditCardPay();
+                        isPaid = creditCardPay();
                         return;
                     case 3:
                         System.out.println("您选择的支付方式是: account balance");
                         accountBalancePay();
-                        return;
+                        continue;
                     case 4:
                         System.out.println("您选择的支付方式是: change");
-                        changePay();
-                        return;
+                        isPaid = changePay();
+                        if (isPaid){
+                            return;
+                        }else {
+                            continue;
+                        }
                     default:
                         System.out.println("输入错误, 请重新输入");
                 }
             }
         }else System.out.println("您无需支付");
     }
-    public void digitalPay() {
+    public boolean digitalPay() {
         System.out.println("请出示你的二维码");
         System.out.println("————————————————————");
         System.out.println("|                 |");
@@ -150,9 +171,10 @@ public class Supermarket {
         System.out.println("|                 |");
         System.out.println("|                 |");
         System.out.println("————————————————————");
-        System.out.println("！！！！支付成功！！！\n");
+        System.out.println("！！！！支付成功！！！！\n");
+        return true;
     }
-    public void creditCardPay() {
+    public boolean creditCardPay() {
         System.out.println("*************请刷卡***********");
         while (true) {
             Scanner scanner = new Scanner(System.in);
@@ -160,7 +182,7 @@ public class Supermarket {
             String password = scanner.next();
             if (password.length() == 6) {
                 System.out.println("刷卡成功");
-                return;
+                return true;
             } else {
                 System.out.println("输入错误,请重新输入");
             }
@@ -169,7 +191,7 @@ public class Supermarket {
     public void accountBalancePay() {
             System.out.println("系统正在维护，请更换支付方式");
     }
-    private void changePay() {
+    private boolean changePay() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("请支付: ");
         double change = scanner.nextDouble();
@@ -177,8 +199,10 @@ public class Supermarket {
         if (change >= total) {
             System.out.println("找零: " + (change - total));
             System.out.println("谢谢惠顾");
+            return true;
         } else {
             System.out.println("金额不足");
+            return false;
         }
     }
 }
