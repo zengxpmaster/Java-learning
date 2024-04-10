@@ -1,5 +1,7 @@
 package march.day19;
 
+import java.util.Scanner;
+
 public class branch {
     public static void main(String[] args) {
         double x = 11.635;
@@ -7,7 +9,7 @@ public class branch {
         y = Math.E;
         System.out.printf("e 的值为 %.4f\n", y);
         System.out.printf("sqrt(%.3f) 为 %.3f\n", x, Math.sqrt(x));
-        /*Scanner scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
         System.out.println("请输入成绩：");
         int a = scan.nextInt(),b = 5;
 
@@ -36,6 +38,6 @@ public class branch {
             case 4:System.out.println("成绩等级：不合格");break;
             default:System.out.println("您输入的成绩不合法。");
 
-        }*/
+        }
     }
 }

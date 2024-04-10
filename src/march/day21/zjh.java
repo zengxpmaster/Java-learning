@@ -19,7 +19,7 @@ public class zjh {
                 } else if (b > Math.sqrt(i) - 1) {
                     s = true;
                 }
-                if (s == true) {
+                if (s) {
                     System.out.print(i + " ");
                     count++;
                     if (count % 20 == 0)

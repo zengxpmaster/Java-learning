@@ -8,7 +8,7 @@ public class for2 {
                 c = a * b;
                 System.out.printf("%d*%d=%2d\t", b, a, c);
             }
-            System.out.printf("\n");
+            System.out.print("\n");
         }
     }
 }

@@ -4,7 +4,6 @@ import java.util.Scanner;
 
 public class test2 {
     public static void main(String[] args) {
-        System.out.println("学号：202300210\t姓名：曾宪培");
         System.out.println("请输入一个三位整数：");
         Scanner scan = new Scanner(System.in);
         int num = scan.nextInt();

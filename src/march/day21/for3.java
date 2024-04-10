@@ -15,7 +15,7 @@ public class for3 {
                 System.out.printf("%d ", x);
                 count++;
                 if (count % 20 == 0)
-                    System.out.printf("\n");
+                    System.out.print("\n");
             }
             x++;
 
